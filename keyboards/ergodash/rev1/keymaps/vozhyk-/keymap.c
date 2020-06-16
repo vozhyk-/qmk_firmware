@@ -20,6 +20,10 @@ enum custom_keycodes {
 #define W_LEFT LCTL(KC_LEFT)
 #define W_RGHT LCTL(KC_RGHT)
 
+#undef TAPPING_TERM
+#define TAPPING_TERM 1200
+#define RETRO_TAPPING
+
 #define S_TAP_z LSFT_T(KC_Z)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
