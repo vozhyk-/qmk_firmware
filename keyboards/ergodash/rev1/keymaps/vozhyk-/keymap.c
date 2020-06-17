@@ -7,16 +7,10 @@
 #define _NAV 1
 #define _MOARNAV 2
 #define _SYM 3
-#define _ADJUST 16
 
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  NAV,
-  SYM,
-  ADJUST,
-};
-
+#define NAV MO(_NAV)
 #define MOARNAV MO(_MOARNAV)
+#define SYM MO(_SYM)
 
 #define W_BSPC LCTL(KC_BSPC)
 #define W_DEL LCTL(KC_DEL)
@@ -54,68 +48,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_MOARNAV] = LAYOUT(
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
+    RESET,   _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, P_UP,    KC_PGUP, P_DOWN,  _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, KC_PGDN, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
-  ),
-
-  [_ADJUST] = LAYOUT(
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, RESET  , _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   )
 };
-
-#ifdef AUDIO_ENABLE
-float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
-#endif
-
-void persistent_default_layer_set(uint16_t default_layer) {
-  eeconfig_update_default_layer(default_layer);
-  default_layer_set(default_layer);
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case QWERTY:
-      if (record->event.pressed) {
-         print("mode just switched to qwerty and this is a huge string\n");
-        set_single_persistent_default_layer(_QWERTY);
-      }
-      return false;
-      break;
-    case NAV:
-      if (record->event.pressed) {
-        layer_on(_NAV);
-        update_tri_layer(_NAV, _SYM, _ADJUST);
-      } else {
-        layer_off(_NAV);
-        update_tri_layer(_NAV, _SYM, _ADJUST);
-      }
-      return false;
-      break;
-    case SYM:
-      if (record->event.pressed) {
-        layer_on(_SYM);
-        update_tri_layer(_NAV, _SYM, _ADJUST);
-      } else {
-        layer_off(_SYM);
-        update_tri_layer(_NAV, _SYM, _ADJUST);
-      }
-      return false;
-      break;
-    case ADJUST:
-      if (record->event.pressed) {
-        layer_on(_ADJUST);
-      } else {
-        layer_off(_ADJUST);
-      }
-      return false;
-      break;
-  }
-  return true;
-}
