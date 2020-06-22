@@ -5,6 +5,7 @@
 
 enum layers {
     _QWERTY,
+    _DVP, // Programmer Dvorak
     _GAME,
     _FLIP,
     _NAV,
@@ -13,6 +14,7 @@ enum layers {
 };
 
 #define GAME TG(_GAME)
+#define DVP TG(_DVP)
 #define NAV MO(_NAV)
 #define FLIP MO(_FLIP)
 #define MOARNAV MO(_MOARNAV)
@@ -28,6 +30,11 @@ enum layers {
 #define MICMUTE KC_F20
 
 #define S_TAP_z LSFT_T(KC_Z)
+#define StapQUO LSFT_T(KC_QUOT)
+
+enum custom_keycodes {
+    DVP_AMP = SAFE_RANGE,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -39,10 +46,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     KC_RALT,          _______, KC_RCTL, FLIP     \
   ),
 
+  [_DVP] = LAYOUT( \
+    DVP_AMP, KC_2,    KC_3,    KC_4,    KC_5,    _______, _______,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL, \
+    _______, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______,         _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH, \
+    _______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______,         _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, \
+    _______, StapQUO, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
+    _______, _______, _______,          _______, _______, _______,         _______, SYM,     _______,          _______, _______, _______  \
+  ),
+
   [_FLIP] = LAYOUT(
     RESET,   _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, GAME,    \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, DVP,     \
+    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, KC_APP,  \
     _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,          _______, SYM,     _______,         KC_SPC,  NAV,     _______,          _______, _______, _______ \
   ),
@@ -79,3 +94,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   )
 };
+
+bool left_shift_down = false;
+bool right_shift_down = false;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // copied from ergodox_ez/keymaps/lukaus
+    case KC_LSHIFT:
+        if (record->event.pressed) {
+            left_shift_down = true;
+            return true;
+        } else {
+            left_shift_down = false;
+            return true;
+        }
+        break;
+    case KC_RSHIFT:
+        if (record->event.pressed) {
+            right_shift_down = true;
+            return true;
+        } else {
+            right_shift_down = false;
+            return true;
+        }
+        break;
+
+    case DVP_AMP:
+        if (left_shift_down || right_shift_down) {
+            if (record->event.pressed)
+                SEND_STRING("%");
+        } else {
+            if (record->event.pressed)
+                SEND_STRING("&");
+        }
+        return false;
+        break;
+    }
+    return true;
+}
