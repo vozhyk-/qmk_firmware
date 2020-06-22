@@ -10,7 +10,8 @@ enum layers {
     _FLIP,
     _NAV,
     _MOARNAV,
-    _SYM
+    _SYM,
+    _DVP_SYM
 };
 
 #define GAME TG(_GAME)
@@ -19,6 +20,7 @@ enum layers {
 #define FLIP MO(_FLIP)
 #define MOARNAV MO(_MOARNAV)
 #define SYM MO(_SYM)
+#define DVP_SYM MO(_DVP_SYM)
 
 #define W_BSPC LCTL(KC_BSPC)
 #define W_DEL LCTL(KC_DEL)
@@ -33,7 +35,20 @@ enum layers {
 #define StapQUO LSFT_T(KC_QUOT)
 
 enum custom_keycodes {
-    DVP_AMP = SAFE_RANGE,
+    DVP_DLR = SAFE_RANGE,
+    DVP_AMP,
+    DVP_LBR,
+    DVP_LCB,
+    DVP_RCB,
+    DVP_LPR,
+    DVP_EQL,
+    DVP_AST,
+    DVP_RPR,
+    DVP_PLS,
+    DVP_RBR,
+    DVP_EXC,
+    DVP_HSH,
+    DVP_AT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -47,11 +62,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_DVP] = LAYOUT( \
-    DVP_AMP, KC_2,    KC_3,    KC_4,    KC_5,    _______, _______,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL, \
+    DVP_AMP, DVP_LBR, DVP_LCB, DVP_RCB, DVP_LPR, _______, _______,         DVP_EQL, DVP_AST, DVP_RPR, DVP_PLS, DVP_RBR, DVP_EXC, DVP_HSH, \
     _______, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______,         _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH, \
     _______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______,         _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, \
     _______, StapQUO, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, SYM,     _______,          _______, _______, _______  \
+    _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, _______,          _______, _______, _______  \
   ),
 
   [_FLIP] = LAYOUT(
@@ -86,6 +101,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
+  [_DVP_SYM] = LAYOUT(
+    _______, _______, DVP_LBR, DVP_LCB, DVP_RCB, DVP_EQL, _______,         _______, DVP_EQL, DVP_AST, _______, _______, _______, _______, \
+    _______, KC_TILD, DVP_AMP, _______, DVP_LPR, DVP_EQL, _______,         _______, DVP_EQL, DVP_RPR, _______, _______, DVP_HSH, KC_BSLS, \
+    _______, DVP_DLR, _______, _______, _______, _______, _______,         _______, _______, DVP_AST, _______, _______, DVP_AT,  KC_PIPE, \
+    _______, _______, KC_QUOT, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
+  ),
+
   [_MOARNAV] = LAYOUT(
     RESET,   _______, _______, KC_BRID, KC_BRIU, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, MICMUTE, _______,         _______, _______, P_UP,    KC_PGUP, P_DOWN,  _______, _______, \
@@ -95,41 +118,73 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-bool left_shift_down = false;
-bool right_shift_down = false;
+// If custom_keycode is pressed, send {un,}shifted_output depending on whether the Shift modifier is active.
+// Returns true if the key event should be processed further.
+// Inspired by:
+// - ergodox_ez/keymaps/lukaus
+// - https://www.reddit.com/r/olkb/comments/94zmyf/custom_keycode_when_key_is_hit_while_holding_shift/e3r38ng/
+// Name inspired by the ShapeShifter Kaleidoscope plugin, which does something slightly different.
+// TODO:
+// - Don't release/press Shift multiple times unnecessarily.
+// - Make autorepeat work with these keys?
+bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char shifted_output, uint16_t keycode, keyrecord_t *record) {
+    if (keycode != custom_keycode)
+        return true;
+
+    if (!record->event.pressed)
+        return false;
+
+    bool left_shift_down = keyboard_report->mods & MOD_BIT(KC_LSHIFT);
+    bool right_shift_down = keyboard_report->mods & MOD_BIT(KC_RSHIFT);
+
+    if (left_shift_down)
+        unregister_code(KC_LSHIFT);
+    if (right_shift_down)
+        unregister_code(KC_RSHIFT);
+
+    if (left_shift_down || right_shift_down) {
+        send_char(shifted_output);
+    } else {
+        send_char(unshifted_output);
+    }
+
+    if (left_shift_down)
+        register_code(KC_LSHIFT);
+    if (right_shift_down)
+        register_code(KC_RSHIFT);
+
+    return false;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        // copied from ergodox_ez/keymaps/lukaus
-    case KC_LSHIFT:
-        if (record->event.pressed) {
-            left_shift_down = true;
-            return true;
-        } else {
-            left_shift_down = false;
-            return true;
-        }
-        break;
-    case KC_RSHIFT:
-        if (record->event.pressed) {
-            right_shift_down = true;
-            return true;
-        } else {
-            right_shift_down = false;
-            return true;
-        }
-        break;
-
-    case DVP_AMP:
-        if (left_shift_down || right_shift_down) {
-            if (record->event.pressed)
-                SEND_STRING("%");
-        } else {
-            if (record->event.pressed)
-                SEND_STRING("&");
-        }
+    if (!process_shape_shifter(DVP_DLR, '$', '~', keycode, record))
         return false;
-        break;
-    }
+    if (!process_shape_shifter(DVP_AMP, '&', '%', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_LBR, '[', '7', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_LCB, '{', '5', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_RCB, '}', '3', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_LPR, '(', '1', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_EQL, '=', '9', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_AST, '*', '0', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_RPR, ')', '2', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_PLS, '+', '4', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_RBR, ']', '6', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_EXC, '!', '8', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_HSH, '#', '`', keycode, record))
+        return false;
+    if (!process_shape_shifter(DVP_AT,  '@', '^', keycode, record))
+        return false;
+
     return true;
 }
