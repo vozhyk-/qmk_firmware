@@ -9,18 +9,18 @@ enum layers {
     _GAME,
     _FLIP,
     _NAV,
-    _MOARNAV,
     _SYM,
-    _DVP_SYM
+    _DVP_SYM,
+    _MOARNAV
 };
 
 #define GAME TG(_GAME)
 #define DVP TG(_DVP)
 #define NAV MO(_NAV)
 #define FLIP MO(_FLIP)
-#define MOARNAV MO(_MOARNAV)
 #define SYM MO(_SYM)
 #define DVP_SYM MO(_DVP_SYM)
+#define MOARNAV MO(_MOARNAV)
 
 #define W_BSPC LCTL(KC_BSPC)
 #define W_DEL LCTL(KC_DEL)
@@ -98,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_TILD, KC_1,    KC_4,    KC_5,    KC_6,    _______,         _______, KC_6,    KC_8,    KC_9,    KC_0,    KC_EQL,  KC_BSLS, \
     _______, KC_GRV,  _______, _______, _______, _______, _______,         _______, _______, KC_7,    _______, _______, KC_RBRC, KC_PIPE, \
     _______, _______, KC_Z,    _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
+    _______, _______, _______,          _______, MOARNAV, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
   [_DVP_SYM] = LAYOUT(
@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_TILD, DVP_AMP, DVP_RCB, DVP_LPR, DVP_EQL, _______,         _______, DVP_EQL, DVP_RPR, DVP_PLS, DVP_RBR, DVP_HSH, KC_BSLS, \
     _______, DVP_DLR, _______, _______, _______, _______, _______,         _______, _______, DVP_AST, _______, _______, DVP_AT,  KC_PIPE, \
     _______, _______, KC_QUOT, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
+    _______, _______, _______,          _______, MOARNAV, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
   [_MOARNAV] = LAYOUT(
