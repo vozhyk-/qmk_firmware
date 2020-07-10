@@ -12,10 +12,8 @@ enum layers {
     _GAME,
     _FLIP,
     _NAV,
-    _DVP_LSW,
-    _DVP_PLa,
+    _LANGSW,
     _DVP_PL,
-    _DVP_BYa,
     _DVP_BY,
     _SYM,
     _DVP_SYM,
@@ -25,13 +23,8 @@ enum layers {
 #define GAME TG(_GAME)
 #define DVP TG(_DVP)
 
-#define DVP_LSW MO(_DVP_LSW)
-#define DVP_PLa TG(_DVP_PLa)
-#define DVP_PL MO(_DVP_PL)
-#define DVP_BYa TG(_DVP_BYa)
-#define DVP_BY MO(_DVP_BY)
-
 #define NAV MO(_NAV)
+#define LANGSW MO(_LANGSW)
 #define FLIP MO(_FLIP)
 #define SYM MO(_SYM)
 #define DVP_SYM MO(_DVP_SYM)
@@ -67,6 +60,13 @@ enum custom_keycodes {
     DVP_HSH,
     DVP_AT,
 
+    LANGSYM,
+
+    L_NONE,
+    L_PL,
+    L_BY_LA,
+    L_JP,
+
     PL_SZ,
     PL_CZ,
     PL_RZ
@@ -79,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,         CTAB,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
     KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_INS,          KC_BSPC, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
     KC_LSFT, S_TAP_z, KC_X,    KC_C,    KC_V,    KC_B,                              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
-    KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     KC_RALT,          _______, KC_RCTL, FLIP     \
+    KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LANGSYM,          LANGSW,  KC_RCTL, FLIP     \
   ),
 
   [_DVP] = LAYOUT( \
@@ -87,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______,         _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH, \
     _______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______,         _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, \
     _______, StapQUO, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, _______,          DVP_LSW, _______, _______  \
+    _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, _______,          _______, _______, _______  \
   ),
 
   [_FLIP] = LAYOUT(
@@ -106,20 +106,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
-  [_DVP_LSW] = LAYOUT(
+  [_LANGSW] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, DVP_PLa, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, L_PL,    _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______,                           DVP_BYa, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
-  ),
-
-  [_DVP_PLa] = LAYOUT(
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, DVP_PL,           _______, _______, _______  \
+    _______, _______, _______, L_JP,    _______, _______,                           L_BY_LA, _______, _______, _______, _______, _______, \
+    _______, _______, _______,          _______, _______, L_NONE,          _______, _______, _______,          _______, _______, _______ \
   ),
 
   [_DVP_PL] = LAYOUT(
@@ -128,14 +120,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, PL_AOGO, PL_OACU, PL_EOGO, _______, _______, _______,         _______, _______, _______, _______, PL_NACU, PL_SZ,   PL_SACU, \
     _______, _______, _______, _______, _______, _______,                           _______, _______, _______, PL_ZACU, PL_ZDOT, _______, \
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
-  ),
-
-  [_DVP_BYa] = LAYOUT(
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, _______, DVP_BY,           _______, _______, _______  \
   ),
 
   [_DVP_BY] = LAYOUT(
@@ -217,7 +201,45 @@ bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char 
     return false;
 }
 
+void press_or_release_code(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed)
+        register_code16(keycode);
+    else
+        unregister_code16(keycode);
+}
+
+void process_momentary_layer_switch(uint8_t layer, keyrecord_t *record) {
+    if (record->event.pressed)
+        layer_on(layer);
+    else
+        layer_off(layer);
+}
+
+enum lang {
+    NONE,
+    BY_LATIN,
+    PL,
+    JP
+} lang = NONE;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == LANGSYM) {
+        switch (lang) {
+        case NONE:
+            press_or_release_code(KC_RALT, record);
+            return false;
+        case BY_LATIN:
+            process_momentary_layer_switch(_DVP_BY, record);
+            return false;
+        case PL:
+            process_momentary_layer_switch(_DVP_PL, record);
+            return false;
+        case JP:
+            // TODO implement
+            return false;
+        }
+    }
+
     if (!process_shape_shifter(DVP_DLR, '$', '~', keycode, record))
         return false;
     if (!process_shape_shifter(DVP_AMP, '&', '%', keycode, record))
@@ -251,6 +273,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return true;
 
     switch (keycode) {
+    case L_NONE:
+        lang = NONE;
+        return false;
+    case L_BY_LA:
+        lang = BY_LATIN;
+        return false;
+    case L_PL:
+        lang = PL;
+        return false;
+    case L_JP:
+        lang = JP;
+        return false;
+
     // TODO: Make Shift+PL_SZ produce Sz, not SZ.
     case PL_SZ:
         SEND_STRING("sz");
