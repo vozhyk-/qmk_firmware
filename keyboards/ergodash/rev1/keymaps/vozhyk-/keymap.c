@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 
 #include "keymap_polish.h"
+#include "keymap_dvp_polish.h"
 #include "keymap_belarusian_latin.h"
 #include "keymap_jp.h"
 
@@ -15,6 +16,7 @@ enum layers {
     _NAV,
     _LANGSW,
     _DVP_PL,
+    _PL,
     _DVP_BY,
     _JP,
     _SYM,
@@ -62,7 +64,8 @@ enum custom_keycodes {
     DVP_HSH,
     DVP_AT,
 
-    LANGSYM,
+    LSYM,
+    DVPLSYM,
 
     L_NONE,
     L_PL,
@@ -71,7 +74,11 @@ enum custom_keycodes {
 
     PL_SZ,
     PL_CZ,
-    PL_RZ
+    PL_RZ,
+
+    DP_PL_SZ,
+    DP_PL_CZ,
+    DP_PL_RZ
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -81,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,         CTAB,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
     KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_INS,          KC_BSPC, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
     KC_LSFT, S_TAP_z, KC_X,    KC_C,    KC_V,    KC_B,                              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
-    KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LANGSYM,          LANGSW,  KC_RCTL, FLIP     \
+    KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LSYM,             LANGSW,  KC_RCTL, FLIP     \
   ),
 
   [_DVP] = LAYOUT( \
@@ -89,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______,         _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH, \
     _______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______,         _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, \
     _______, StapQUO, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
-    _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, _______,          _______, _______, _______  \
+    _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, DVPLSYM,          _______, _______, _______  \
   ),
 
   [_FLIP] = LAYOUT(
@@ -122,6 +129,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, PL_AOGO, PL_OACU, PL_EOGO, _______, _______, _______,         _______, _______, _______, _______, PL_NACU, PL_SZ,   PL_SACU, \
     _______, _______, _______, _______, _______, _______,                           _______, _______, _______, PL_ZACU, PL_ZDOT, _______, \
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
+  ),
+
+  [_PL] = LAYOUT(
+    _______, _______,    _______,    _______,    _______, _______, _______, _______, _______, _______, _______,  DP_PL_RZ,   _______,    _______, \
+    _______, _______,    _______,    _______,    _______, _______, _______, _______, _______, _______, DP_PL_CZ, DP_PL_CACU, DP_PL_LSTR, _______, \
+    _______, DP_PL_AOGO, DP_PL_OACU, DP_PL_EOGO, _______, _______, _______, _______, _______, _______, _______,  DP_PL_NACU, DP_PL_SZ,   DP_PL_SACU,\
+    _______, _______,    _______,    _______,    _______, _______,                   _______, _______, _______,  DP_PL_ZACU, DP_PL_ZDOT, _______, \
+    _______, _______,    _______,                _______, _______, _______, _______, _______, _______,           _______,    _______,    _______  \
   ),
 
   [_DVP_BY] = LAYOUT(
@@ -233,7 +248,22 @@ enum lang {
 } lang = NONE;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == LANGSYM) {
+    if (keycode == LSYM) {
+        switch (lang) {
+        case NONE:
+        case BY_LATIN:
+            press_or_release_code(KC_RALT, record);
+            return false;
+        case PL:
+            process_momentary_layer_switch(_PL, record);
+            return false;
+        case JP:
+            process_momentary_layer_switch(_JP, record);
+            return false;
+        }
+    }
+
+    if (keycode == DVPLSYM) {
         switch (lang) {
         case NONE:
             press_or_release_code(KC_RALT, record);
@@ -305,6 +335,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     case PL_RZ:
         SEND_STRING("rz");
+        return false;
+
+    // TODO: Make Shift+PL_SZ produce Sz, not SZ.
+    case DP_PL_SZ:
+        SEND_STRING(";/"); // interpreted as "sz" on dvp
+        return false;
+    case DP_PL_CZ:
+        SEND_STRING("i/"); // interpreted as "cz" on dvp
+        return false;
+    case DP_PL_RZ:
+        SEND_STRING("o/"); // interpreted as "rz" on dvp
         return false;
     }
 
