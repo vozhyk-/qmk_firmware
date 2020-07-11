@@ -2,6 +2,7 @@
 
 #include "keymap_polish.h"
 #include "keymap_belarusian_latin.h"
+#include "keymap_jp.h"
 
 #undef LAYOUT
 #define LAYOUT LAYOUT_2key
@@ -15,6 +16,7 @@ enum layers {
     _LANGSW,
     _DVP_PL,
     _DVP_BY,
+    _JP,
     _SYM,
     _DVP_SYM,
     _MOARNAV
@@ -130,6 +132,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
+  [_JP] = LAYOUT(
+    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, JP_YEN,  _______,         _______, _______, _______, _______, _______, _______, JP_BSLS, \
+    _______, _______, _______, _______, JP_ZKHK, _______, _______,         _______, _______, JP_KANA, _______, _______, _______, JP_UNDS, \
+    _______, _______, _______, _______, _______, _______,                           _______, JP_HENK, _______, _______, _______, _______, \
+    _______, _______, _______,          _______, _______, JP_MHEN,         _______, _______, _______,          _______, _______, _______  \
+  ),
+
   [_NAV] = LAYOUT(
     KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  \
     _______, _______, _______, W_BSPC,  W_DEL,   _______, _______,         _______, _______, W_LEFT,  KC_UP,   W_RGHT,  _______, _______, \
@@ -235,7 +245,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             process_momentary_layer_switch(_DVP_PL, record);
             return false;
         case JP:
-            // TODO implement
+            process_momentary_layer_switch(_JP, record);
             return false;
         }
     }
