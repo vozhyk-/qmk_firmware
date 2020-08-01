@@ -28,7 +28,7 @@ enum layers {
 #define DVP TG(_DVP)
 
 #define NAV MO(_NAV)
-#define LANGSW MO(_LANGSW)
+#define LANGSW OSL(_LANGSW)
 #define FLIP MO(_FLIP)
 #define SYM MO(_SYM)
 #define DVP_SYM MO(_DVP_SYM)
