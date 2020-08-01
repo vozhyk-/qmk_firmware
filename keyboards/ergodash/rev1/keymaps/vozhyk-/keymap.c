@@ -41,8 +41,6 @@ enum layers {
 #define P_UP LCTL(KC_UP)
 #define P_DOWN LCTL(KC_DOWN)
 
-#define CTAB LCTL(KC_TAB)
-
 #define MICMUTE KC_F20
 
 #define S_TAP_z LSFT_T(KC_Z)
@@ -78,7 +76,9 @@ enum custom_keycodes {
 
     DP_PL_SZ,
     DP_PL_CZ,
-    DP_PL_RZ
+    DP_PL_RZ,
+
+    CTAB
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -240,6 +240,35 @@ void process_momentary_layer_switch(uint8_t layer, keyrecord_t *record) {
         layer_off(layer);
 }
 
+// Based on https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/feature_macros#super-alt-tab
+bool is_control_tab_active = false;
+uint16_t control_tab_timer = 0;
+#define CONTROL_TAB_TIME 1000
+
+void process_control_tab(keyrecord_t *record) {
+    if (!record->event.pressed) {
+        unregister_code(KC_TAB);
+        return;
+    }
+
+    if (!is_control_tab_active) {
+        is_control_tab_active = true;
+        register_code(KC_LCTL);
+    }
+    control_tab_timer = timer_read();
+    register_code(KC_TAB);
+}
+
+void matrix_scan_control_tab(void) {
+    if (!is_control_tab_active)
+        return;
+
+    if (timer_elapsed(control_tab_timer) > CONTROL_TAB_TIME) {
+        unregister_code(KC_LCTL);
+        is_control_tab_active = false;
+    }
+}
+
 enum lang {
     NONE,
     BY_LATIN,
@@ -309,6 +338,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_shape_shifter(DVP_AT,  '@', '^', keycode, record))
         return false;
 
+    if (keycode == CTAB) {
+        process_control_tab(record);
+        return false;
+    }
+
     if (!record->event.pressed)
         return true;
 
@@ -350,4 +384,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     return true;
+}
+
+void matrix_scan_user(void) {
+    matrix_scan_control_tab();
 }
