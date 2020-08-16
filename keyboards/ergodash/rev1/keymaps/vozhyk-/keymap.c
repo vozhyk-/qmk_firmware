@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    CLT,             CTAB,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
     KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_INS,          KC_BSPC, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
     KC_LSFT, S_TAP_z, KC_X,    KC_C,    KC_V,    KC_B,                              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
-    KC_LCTL, KC_LCTL, _______,          KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LSYM,             LANGSW,  KC_RCTL, SH_MON   \
+    KC_LCTL, KC_LCTL, LANGSW,           KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LSYM,             LANGSW,  KC_RCTL, SH_MON \
   ),
 
   [_DVP] = LAYOUT( \
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, L_PL,    _______, _______,         _______, _______, _______, _______, _______, _______, DVP,     \
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, SWAPH,   _______, _______, _______, KC_APP, \
     _______, _______, _______, L_JP,    _______, _______,                           L_BY_LA, _______, _______, _______, _______, _______, \
-    _______, _______, _______,          _______, _______, L_NONE,          _______, _______, _______,          _______, _______, _______ \
+    _______, _______, _______,          _______, MOARNAV, L_NONE,          _______, _______, _______,          _______, _______, _______ \
   ),
 
   [_DVP_PL] = LAYOUT(
