@@ -52,9 +52,6 @@ enum layers {
 
 #define MICMUTE KC_F20
 
-#define S_TAP_z LSFT_T(KC_Z)
-#define StapQUO LSFT_T(KC_QUOT)
-
 enum custom_keycodes {
     DVP_DLR = SAFE_RANGE,
     DVP_AMP,
@@ -97,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_WFAV, KC_SLEP,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    CLT,             CTAB,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
     KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_INS,          KC_BSPC, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
-    KC_LSFT, S_TAP_z, KC_X,    KC_C,    KC_V,    KC_B,                              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
+    KC_LSFT, KC_LSFT, KC_X,    KC_C,    KC_V,    KC_B,                              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
     KC_LCTL, KC_LCTL, LANGSW,           KC_LALT, NAV,     KC_SPC ,         KC_ENT,  SYM,     LSYM,             LANGSW,  KC_RCTL, SH_MON \
   ),
 
@@ -105,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     DVP_AMP, DVP_LBR, DVP_LCB, DVP_RCB, DVP_LPR, _______, _______,         DVP_EQL, DVP_AST, DVP_RPR, DVP_PLS, DVP_RBR, DVP_EXC, DVP_HSH, \
     _______, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    DVP_CLT,         _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH, \
     _______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______,         _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, \
-    _______, StapQUO, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
+    _______, KC_LSFT, KC_Q,    KC_J,    KC_K,    KC_X,                              KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, \
     _______, _______, _______,          _______, _______, _______,         _______, DVP_SYM, DVPLSYM,          _______, _______, _______  \
   ),
 
@@ -177,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_1,    KC_1,    KC_3,    KC_4,    KC_6,    _______,         _______, KC_6,    _______, _______, _______, _______, _______, \
     _______, KC_TILD, KC_2,    KC_3,    KC_5,    KC_6,    _______,         _______, KC_6,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_RBRC, \
     KC_1,    KC_GRV,  KC_1,    _______, KC_4,    _______, _______,         _______, _______, KC_7,    _______, _______, KC_BSLS, KC_EQL, \
-    _______, KC_LSFT, KC_Z,    _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
+    _______, _______, KC_Z,    _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,          _______, MOARNAV, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
@@ -185,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, DVP_AMP, DVP_AMP, DVP_LCB, DVP_RCB, DVP_EQL, _______,         _______, DVP_EQL, DVP_AST, _______, _______, _______, _______, \
     _______, KC_TILD, DVP_LBR, DVP_LCB, DVP_LPR, DVP_EQL, _______,         _______, DVP_EQL, DVP_RPR, DVP_PLS, DVP_RBR, DVP_EXC, DVP_AT,  \
     DVP_AMP, DVP_DLR, DVP_AMP, _______, DVP_RCB, _______, _______,         _______, _______, DVP_AST, _______, _______, KC_BSLS, DVP_HSH, \
-    _______, KC_LSFT, KC_QUOT, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
+    _______, _______, KC_QUOT, _______, _______, _______,                           _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,          _______, MOARNAV, _______,         _______, _______, _______,          _______, _______, _______  \
   ),
 
