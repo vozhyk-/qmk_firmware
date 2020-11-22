@@ -85,7 +85,9 @@ enum custom_keycodes {
     DP_PL_RZ,
 
     CTAB,     // Control-Tab with Control released after a timeout.
-    RF12      // Rapid-fire F12 to enter the Boot Menu on ThinkPads.
+    RF12,     // Rapid-fire F12 to enter the Boot Menu on ThinkPads.
+    CUTHOME,  // Cut to beginning-of-line.
+    CUTEND,   // Cut to end-of-line.
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -165,7 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NAV] = LAYOUT(
     KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  RF12,    \
     _______, _______, _______, W_BSPC,  W_DEL,   _______, _______,         _______, KC_FIND, W_LEFT,  KC_UP,   W_RGHT,  _______, _______, \
-    _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  _______, _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO, \
+    _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  CUTEND,  _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO, \
     _______, KC_LCTL, KC_CUT,  KC_COPY, KC_PSTE, KC_ESC,                            KC_END,  KC_ENT,  _______, _______, KC_RCTL, _______, \
     _______, _______, _______,          _______, _______, _______,         KC_SPC,  MOARNAV, _______,          _______, _______, _______ \
   ),
@@ -189,7 +191,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_MOARNAV] = LAYOUT(
     RESET,   _______, _______, KC_BRID, KC_BRIU, _______, _______,         _______, _______, _______, _______, _______, _______, _______, \
     _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, MICMUTE, _______,         _______, _______, P_UP,    KC_PGUP, P_DOWN,  _______, _______, \
-    _______, KC_MPLY, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,         _______, _______, _______, KC_PGDN, _______, KC_PSCR, _______, \
+    _______, KC_MPLY, KC_MPRV, KC_MPLY, KC_MNXT, CUTHOME, _______,         _______, _______, _______, KC_PGDN, _______, KC_PSCR, _______, \
     _______, _______, _______, KC_BRID, KC_BRIU, _______,                           _______, _______, _______, _______, _______, _______, \
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______  \
   )
@@ -416,6 +418,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     case DP_PL_RZ:
         SEND_STRING("o/"); // interpreted as "rz" on dvp
+        return false;
+
+    case CUTHOME:
+        SEND_STRING(SS_DOWN(X_LSFT) SS_TAP(X_HOME) SS_UP(X_LSFT) SS_TAP(X_CUT));
+        return false;
+    case CUTEND:
+        SEND_STRING(SS_DOWN(X_LSFT) SS_TAP(X_END) SS_UP(X_LSFT) SS_TAP(X_CUT));
         return false;
     }
 
