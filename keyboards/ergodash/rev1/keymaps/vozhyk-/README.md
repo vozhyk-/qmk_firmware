@@ -2,7 +2,8 @@
 
 ## Features
 
-- Numbers shifted to the left so that (QWERTY) `1`, `2`, `3` are in the same position as on a row-staggered keyboard when holding Hyper or Shift with the left pinky.
+- Numbers shifted to the left so that (QWERTY) `1`, `2`, `3` are in the same position as on a row-staggered keyboard
+  when holding Hyper (`KC_LGUI`) or Shift with the left pinky.
 - `'`(QWERTY `z`) replaced with `Shift`, so that `Shift` is accessible by bending the left pinky down, like on a row-staggered keyboard.
 - Hardware Programmer Dvorak-like layout - mapped to QWERTY keys and using macros to have different shifted and non-shifted keycodes.
 - Modes for languages:
@@ -12,6 +13,11 @@
 - Swap-hands and a mode for using it with both hands
 - Ergoemacs-like Navigation layer
 - A Symbol layer with symbols placed at Programmer Dvorak-like finger positions
+- A Game mode with:
+  - numbers and `'` at their regular positions;
+  - more letters on the right side of the left half;
+  - Hyper (`KC_LGUI`) at a regular keyboard's CapsLock position replaced with `\` to map it in games more easily
+    and not press Win accidentally.
 - A macro for switching tabs in most-recently used order with Control-Tab
 - A rapid-fire F12 key for entering the boot menu on ThinkPads
 - 
