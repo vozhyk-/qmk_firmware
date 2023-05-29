@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "keymap_dvp.h"
+#include "keymap_dvorak_programmer.h"
 
 // clang-format off
 

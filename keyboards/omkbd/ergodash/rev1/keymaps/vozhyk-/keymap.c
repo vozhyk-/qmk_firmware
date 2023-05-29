@@ -1,9 +1,9 @@
 #include QMK_KEYBOARD_H
 
 #include "keymap_polish.h"
-#include "keymap_dvp_polish.h"
+#include "keymap_dvorak_programmer_polish.h"
 #include "keymap_belarusian_latin.h"
-#include "keymap_jp.h"
+#include "keymap_japanese.h"
 
 #undef LAYOUT
 #define LAYOUT LAYOUT_2key
