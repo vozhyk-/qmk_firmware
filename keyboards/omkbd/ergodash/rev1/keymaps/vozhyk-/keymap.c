@@ -307,7 +307,7 @@ enum lang {
     BY_LATIN,
     PL,
     JP
-} lang = NONE;
+} lang = PL;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == LSYM) {
