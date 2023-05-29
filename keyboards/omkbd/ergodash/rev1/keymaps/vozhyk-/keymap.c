@@ -12,7 +12,9 @@ enum layers {
     _QWERTY,
     _DVP, // Programmer Dvorak
     _GAME,
+    _MAC,
     _NAV,
+    _MAC_NAV,
     _LANGSW,
     _DVP_PL,
     _PL,
@@ -21,18 +23,22 @@ enum layers {
     _SWAPH, // More swap-hand keys
     _SYM,
     _DVP_SYM,
-    _MOARNAV
+    _MOARNAV,
+    _MAC_MRN
 };
 
 #define GAME TG(_GAME)
 #define DVP TG(_DVP)
+#define MAC TG(_MAC)
 #define SWAPH TG(_SWAPH)
 
 #define NAV MO(_NAV)
+#define MAC_NAV MO(_MAC_NAV)
 #define LANGSW OSL(_LANGSW)
 #define SYM MO(_SYM)
 #define DVP_SYM MO(_DVP_SYM)
 #define MOARNAV MO(_MOARNAV)
+#define MAC_MRN MO(_MAC_MRN)
 
 #define W_BSPC LCTL(KC_BSPC)
 #define W_DEL LCTL(KC_DEL)
@@ -41,14 +47,24 @@ enum layers {
 #define P_UP LCTL(KC_UP)
 #define P_DOWN LCTL(KC_DOWN)
 
+#define MAC_WBS LGUI(KC_BSPC)
+#define MAC_WDL LGUI(KC_DEL)
+#define MAC_WL LGUI(KC_LEFT)
+#define MAC_WR LGUI(KC_RGHT)
+#define MAC_PU LGUI(KC_UP)
+#define MAC_PD LGUI(KC_DOWN)
+
 #define SH_SPC SH_T(KC_SPC)
 #define SH_ENT SH_T(KC_ENT)
 
 // Close tab.
 #define CLT LCTL(DP_W)
 #define DVP_CLT LCTL(KC_W)
+#define MAC_CLT LGUI(KC_W)
 // Reopen tab.
 #define REOPENT LCTL(LSFT(DP_T))
+// Mac Hyper key - simulate an extra modifier
+#define MAC_HYP LCTL(LALT(KC_LGUI))
 
 #define MICMUTE KC_F20
 
@@ -120,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     QK_BOOT, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, GAME,
     _______, _______, _______, _______, L_PL,    _______, REOPENT,         _______, _______, _______, _______, _______, _______, DVP,
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, SWAPH,   _______, _______, _______, KC_APP,
-    _______, _______, _______, L_JP,    _______, _______,                           L_BY_LA, _______, _______, _______, _______, _______,
+    _______, _______, _______, L_JP,    _______, _______,                           L_BY_LA, MAC,     _______, _______, _______, _______,
     _______, _______, _______,          _______, MOARNAV, L_NONE,          _______, _______, _______,          _______, _______, _______
   ),
 
@@ -156,6 +172,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______,          _______, _______, JP_MHEN,         _______, _______, _______,          _______, _______, _______
   ),
 
+  [_MAC] = LAYOUT(
+    _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, MAC_CLT,         _______, _______, _______, _______, _______, _______, _______,
+    MAC_HYP, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______,                           _______, _______, _______, _______, _______, _______,
+    KC_LCTL, KC_LGUI, KC_LCTL,          _______, MAC_NAV, _______,         _______, _______, _______,          _______, KC_LGUI, _______
+  ),
+
   [_SWAPH] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
@@ -170,6 +194,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  CUTEND,  _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO,
     _______, KC_LCTL, KC_CUT,  KC_COPY, KC_PSTE, KC_ESC,                            KC_END,  KC_ENT,  _______, _______, KC_RCTL, _______,
     _______, _______, _______,          _______, _______, _______,         KC_SPC,  MOARNAV, _______,          _______, _______, _______
+  ),
+
+  [_MAC_NAV] = LAYOUT(
+    KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  RF12,
+    _______, _______, _______, MAC_WBS, MAC_WDL, _______, _______,         _______, KC_FIND, MAC_WL,  KC_UP,   MAC_WR,  _______, _______,
+    _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  CUTEND,  _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO,
+    _______, KC_LGUI, KC_CUT,  KC_COPY, KC_PSTE, KC_ESC,                            KC_END,  KC_ENT,  _______, _______, KC_RCTL, _______,
+    _______, _______, _______,          _______, _______, _______,         KC_SPC,  MAC_MRN, _______,          _______, _______, _______
   ),
 
   [_SYM] = LAYOUT(
@@ -191,6 +223,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_MOARNAV] = LAYOUT(
     QK_BOOT, _______, _______, KC_BRID, KC_BRIU, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
     _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, MICMUTE, _______,         _______, _______, P_UP,    KC_PGUP, P_DOWN,  _______, _______,
+    _______, KC_MPLY, KC_MPRV, KC_MPLY, KC_MNXT, CUTHOME, _______,         _______, _______, _______, KC_PGDN, _______, KC_PSCR, _______,
+    _______, _______, _______, KC_BRID, KC_BRIU, _______,                           _______, _______, _______, _______, _______, _______,
+    _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______
+  ),
+
+  [_MAC_MRN] = LAYOUT(
+    QK_BOOT, _______, _______, KC_BRID, KC_BRIU, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, MICMUTE, _______,         _______, _______, MAC_PU,  KC_PGUP, MAC_PD,  _______, _______,
     _______, KC_MPLY, KC_MPRV, KC_MPLY, KC_MNXT, CUTHOME, _______,         _______, _______, _______, KC_PGDN, _______, KC_PSCR, _______,
     _______, _______, _______, KC_BRID, KC_BRIU, _______,                           _______, _______, _______, _______, _______, _______,
     _______, _______, _______,          _______, _______, _______,         _______, _______, _______,          _______, _______, _______
