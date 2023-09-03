@@ -10,7 +10,7 @@
 
 enum layers {
     _QWERTY,
-    _DVP, // Programmer Dvorak
+    _DVP, /* Programmer Dvorak */
     _GAME,
     _MAC,
     _NAV,
@@ -20,7 +20,7 @@ enum layers {
     _PL,
     _DVP_BY,
     _JP,
-    _SWAPH, // More swap-hand keys
+    _SWAPH, /* More swap-hand keys */
     _SYM,
     _DVP_SYM,
     _MOARNAV,
@@ -57,13 +57,13 @@ enum layers {
 #define SH_SPC SH_T(KC_SPC)
 #define SH_ENT SH_T(KC_ENT)
 
-// Close tab.
+/* Close tab. */
 #define CLT LCTL(DP_W)
 #define DVP_CLT LCTL(KC_W)
 #define MAC_CLT LGUI(KC_W)
-// Reopen tab.
+/* Reopen tab. */
 #define REOPENT LCTL(LSFT(DP_T))
-// Mac Hyper key - simulate an extra modifier
+/* Mac Hyper key - simulate an extra modifier. */
 #define MAC_HYP LCTL(LALT(KC_LGUI))
 
 #define MICMUTE KC_F20
@@ -100,9 +100,9 @@ enum custom_keycodes {
     DP_PL_CZ,
     DP_PL_RZ,
 
-    CTAB,     // Control-Tab with Control released after a timeout.
-    CUTHOME,  // Cut to beginning-of-line.
-    CUTEND,   // Cut to end-of-line.
+    CTAB,     /* Control-Tab with Control released after a timeout. */
+    CUTHOME,  /* Cut to beginning-of-line. */
+    CUTEND,   /* Cut to end-of-line. */
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -236,29 +236,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-// If custom_keycode is pressed, send {un,}shifted_output depending on whether the Shift modifier is active.
-// Returns true if the key event should be processed further.
-// Inspired by:
-// - ergodox_ez/keymaps/lukaus
-// - https://www.reddit.com/r/olkb/comments/94zmyf/custom_keycode_when_key_is_hit_while_holding_shift/e3r38ng/
-// Name inspired by the ShapeShifter Kaleidoscope plugin, which does something slightly different.
-// TODO:
-// - Don't release/press Shift multiple times unnecessarily.
-// - Make autorepeat work with these keys?
+/*
+ * If custom_keycode is pressed, send {un,}shifted_output depending on whether the Shift modifier is active.
+ * Returns true if the key event should be processed further.
+ * Inspired by:
+ * - ergodox_ez/keymaps/lukaus
+ * - https://www.reddit.com/r/olkb/comments/94zmyf/custom_keycode_when_key_is_hit_while_holding_shift/e3r38ng/
+ * Name inspired by the ShapeShifter Kaleidoscope plugin, which does something slightly different.
+ * TODO:
+ * - Don't release/press Shift multiple times unnecessarily.
+ * - Make autorepeat work with these keys?
+ */
 bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char shifted_output, uint16_t keycode, keyrecord_t *record) {
-    if (keycode != custom_keycode)
+    if (keycode != custom_keycode) {
         return true;
+    }
 
-    if (!record->event.pressed)
+    if (!record->event.pressed) {
         return false;
+    }
 
     bool left_shift_down = keyboard_report->mods & MOD_BIT(KC_LSHIFT);
     bool right_shift_down = keyboard_report->mods & MOD_BIT(KC_RSHIFT);
 
-    if (left_shift_down)
+    if (left_shift_down) {
         unregister_code(KC_LSHIFT);
-    if (right_shift_down)
+    }
+    if (right_shift_down) {
         unregister_code(KC_RSHIFT);
+    }
 
     if (left_shift_down || right_shift_down) {
         send_char(shifted_output);
@@ -266,29 +272,33 @@ bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char 
         send_char(unshifted_output);
     }
 
-    if (left_shift_down)
+    if (left_shift_down) {
         register_code(KC_LSHIFT);
-    if (right_shift_down)
+    }
+    if (right_shift_down) {
         register_code(KC_RSHIFT);
+    }
 
     return false;
 }
 
 void press_or_release_code(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed)
+    if (record->event.pressed) {
         register_code16(keycode);
-    else
+    } else {
         unregister_code16(keycode);
+    }
 }
 
 void process_momentary_layer_switch(uint8_t layer, keyrecord_t *record) {
-    if (record->event.pressed)
+    if (record->event.pressed) {
         layer_on(layer);
-    else
+    } else {
         layer_off(layer);
+    }
 }
 
-// Based on https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/feature_macros#super-alt-tab
+/* Based on https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/feature_macros#super-alt-tab */
 bool is_control_tab_active = false;
 uint16_t control_tab_timer = 0;
 #define CONTROL_TAB_TIME 1000
@@ -308,8 +318,9 @@ void process_control_tab(keyrecord_t *record) {
 }
 
 void matrix_scan_control_tab(void) {
-    if (!is_control_tab_active)
+    if (!is_control_tab_active) {
         return;
+    }
 
     if (timer_elapsed(control_tab_timer) > CONTROL_TAB_TIME) {
         unregister_code(KC_LCTL);
@@ -357,42 +368,57 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     }
 
-    if (!process_shape_shifter(DVP_DLR, '$', '~', keycode, record))
+    if (!process_shape_shifter(DVP_DLR, '$', '~', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_AMP, '&', '%', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_AMP, '&', '%', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_LBR, '[', '7', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_LBR, '[', '7', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_LCB, '{', '5', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_LCB, '{', '5', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_RCB, '}', '3', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_RCB, '}', '3', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_LPR, '(', '1', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_LPR, '(', '1', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_EQL, '=', '9', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_EQL, '=', '9', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_AST, '*', '0', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_AST, '*', '0', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_RPR, ')', '2', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_RPR, ')', '2', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_PLS, '+', '4', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_PLS, '+', '4', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_RBR, ']', '6', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_RBR, ']', '6', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_EXC, '!', '8', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_EXC, '!', '8', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_HSH, '#', '`', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_HSH, '#', '`', keycode, record)) {
         return false;
-    if (!process_shape_shifter(DVP_AT,  '@', '^', keycode, record))
+    }
+    if (!process_shape_shifter(DVP_AT,  '@', '^', keycode, record)) {
         return false;
+    }
 
     if (keycode == CTAB) {
         process_control_tab(record);
         return false;
     }
 
-    if (!record->event.pressed)
+    if (!record->event.pressed) {
         return true;
+    }
 
     switch (keycode) {
     case L_NONE:
@@ -408,7 +434,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         lang = JP;
         return false;
 
-    // TODO: Make Shift+PL_SZ produce Sz, not SZ.
+    /* TODO: Make Shift+PL_SZ produce Sz, not SZ. */
     case PL_SZ:
         SEND_STRING("sz");
         return false;
@@ -419,15 +445,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("rz");
         return false;
 
-    // TODO: Make Shift+PL_SZ produce Sz, not SZ.
+    /* TODO: Make Shift+PL_SZ produce Sz, not SZ. */
     case DP_PL_SZ:
-        SEND_STRING(";/"); // interpreted as "sz" on dvp
+        SEND_STRING(";/"); /* interpreted as "sz" on dvp */
         return false;
     case DP_PL_CZ:
-        SEND_STRING("i/"); // interpreted as "cz" on dvp
+        SEND_STRING("i/"); /* interpreted as "cz" on dvp */
         return false;
     case DP_PL_RZ:
-        SEND_STRING("o/"); // interpreted as "rz" on dvp
+        SEND_STRING("o/"); /* interpreted as "rz" on dvp */
         return false;
 
     case CUTHOME:
