@@ -101,7 +101,6 @@ enum custom_keycodes {
     DP_PL_RZ,
 
     CTAB,     // Control-Tab with Control released after a timeout.
-    RF12,     // Rapid-fire F12 to enter the Boot Menu on ThinkPads.
     CUTHOME,  // Cut to beginning-of-line.
     CUTEND,   // Cut to end-of-line.
 };
@@ -189,7 +188,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_NAV] = LAYOUT(
-    KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  RF12,
+    KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
     _______, _______, _______, W_BSPC,  W_DEL,   _______, _______,         _______, KC_FIND, W_LEFT,  KC_UP,   W_RGHT,  _______, _______,
     _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  CUTEND,  _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO,
     _______, KC_LCTL, KC_CUT,  KC_COPY, KC_PSTE, KC_ESC,                            KC_END,  KC_ENT,  _______, _______, KC_RCTL, _______,
@@ -197,7 +196,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_MAC_NAV] = LAYOUT(
-    KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  RF12,
+    KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
     _______, _______, _______, MAC_WBS, MAC_WDL, _______, _______,         _______, KC_FIND, MAC_WL,  KC_UP,   MAC_WR,  _______, _______,
     _______, KC_LSFT, _______, KC_BSPC, KC_DEL,  CUTEND,  _______,         _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_RSFT, KC_UNDO,
     _______, KC_LGUI, KC_CUT,  KC_COPY, KC_PSTE, KC_ESC,                            KC_END,  KC_ENT,  _______, _______, KC_RCTL, _______,
@@ -318,30 +317,6 @@ void matrix_scan_control_tab(void) {
     }
 }
 
-bool rapid_f12_pressed = false;
-uint16_t rapid_f12_timer = 0;
-#define RAPID_F12_TIME 50
-
-void process_rapid_f12(keyrecord_t *record) {
-    if (record->event.pressed) {
-        SEND_STRING(SS_TAP(X_F12));
-        rapid_f12_timer = timer_read();
-        rapid_f12_pressed = true;
-    } else {
-        rapid_f12_pressed = false;
-    }
-}
-
-void matrix_scan_rapid_f12(void) {
-    if (!rapid_f12_pressed)
-        return;
-
-    if (timer_elapsed(rapid_f12_timer) > RAPID_F12_TIME) {
-        SEND_STRING(SS_TAP(X_F12));
-        rapid_f12_timer = timer_read();
-    }
-}
-
 enum lang {
     NONE,
     BY_LATIN,
@@ -416,11 +391,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    if (keycode == RF12) {
-        process_rapid_f12(record);
-        return false;
-    }
-
     if (!record->event.pressed)
         return true;
 
@@ -473,5 +443,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void matrix_scan_user(void) {
     matrix_scan_control_tab();
-    matrix_scan_rapid_f12();
 }

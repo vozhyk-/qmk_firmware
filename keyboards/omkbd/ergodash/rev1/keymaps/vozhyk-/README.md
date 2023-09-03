@@ -19,7 +19,6 @@
   - Hyper (`KC_LGUI`) at a regular keyboard's CapsLock position replaced with `\` to map it in games more easily
     and not press Win accidentally.
 - A macro for switching tabs in most-recently used order with Control-Tab
-- A rapid-fire F12 key for entering the boot menu on ThinkPads
 - A Mac mode with:
   - Left (`Command`, `Control`, `Option`) on the bottom row.
   - Hyper mapped to `Command+Control+Option` to simulate the modifier missing in MacOS.
