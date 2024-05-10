@@ -256,14 +256,14 @@ bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char 
         return false;
     }
 
-    bool left_shift_down = keyboard_report->mods & MOD_BIT(KC_LSHIFT);
-    bool right_shift_down = keyboard_report->mods & MOD_BIT(KC_RSHIFT);
+    bool left_shift_down = keyboard_report->mods & MOD_BIT(KC_LSFT);
+    bool right_shift_down = keyboard_report->mods & MOD_BIT(KC_RSFT);
 
     if (left_shift_down) {
-        unregister_code(KC_LSHIFT);
+        unregister_code(KC_LSFT);
     }
     if (right_shift_down) {
-        unregister_code(KC_RSHIFT);
+        unregister_code(KC_RSFT);
     }
 
     if (left_shift_down || right_shift_down) {
@@ -273,10 +273,10 @@ bool process_shape_shifter(uint16_t custom_keycode, char unshifted_output, char 
     }
 
     if (left_shift_down) {
-        register_code(KC_LSHIFT);
+        register_code(KC_LSFT);
     }
     if (right_shift_down) {
-        register_code(KC_RSHIFT);
+        register_code(KC_RSFT);
     }
 
     return false;
