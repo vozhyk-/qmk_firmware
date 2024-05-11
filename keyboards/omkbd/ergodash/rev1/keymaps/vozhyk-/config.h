@@ -36,3 +36,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef TAPPING_TERM
 #define TAPPING_TERM 160
 #define PERMISSIVE_HOLD
+
+#define RGBLIGHT_LAYERS

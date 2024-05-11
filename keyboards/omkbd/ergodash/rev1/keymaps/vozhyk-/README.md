@@ -23,3 +23,10 @@
   - Left (`Command`, `Control`, `Option`) on the bottom row.
   - Hyper mapped to `Command+Control+Option` to simulate the modifier missing in MacOS.
   - Most `Control-*` mappings replaced with `Command-*`.
+
+## Underglow
+
+Used to indicate active modes:
+- Programmer Dvorak emulation;
+- game mode;
+- Mac mode.

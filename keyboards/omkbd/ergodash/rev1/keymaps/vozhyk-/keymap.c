@@ -236,6 +236,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
+const rgblight_segment_t PROGMEM my_dvp_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {10, 1, HSV_ORANGE},
+    {13, 1, HSV_ORANGE}
+);
+
+const rgblight_segment_t PROGMEM my_game_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 1, HSV_BLUE},
+    {15, 1, HSV_BLUE}
+);
+
+const rgblight_segment_t PROGMEM my_mac_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {12, 1, HSV_GREEN}
+);
+
+enum rgb_layers {
+    _RGB_DVP = 0,
+    _RGB_GAME,
+    _RGB_MAC,
+};
+
+const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    my_dvp_layer,
+    my_game_layer,
+    my_mac_layer
+);
+
+void keyboard_post_init_user(void) {
+    rgblight_layers = my_rgb_layers;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(_RGB_DVP, layer_state_cmp(state, _DVP));
+    rgblight_set_layer_state(_RGB_GAME, layer_state_cmp(state, _GAME));
+    rgblight_set_layer_state(_RGB_MAC, layer_state_cmp(state, _MAC));
+
+    return state;
+}
+
 /*
  * If custom_keycode is pressed, send {un,}shifted_output depending on whether the Shift modifier is active.
  * Returns true if the key event should be processed further.
