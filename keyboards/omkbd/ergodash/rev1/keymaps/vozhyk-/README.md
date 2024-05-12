@@ -8,8 +8,9 @@
 - Hardware Programmer Dvorak-like layout - mapped to QWERTY keys and using macros to have different shifted and non-shifted keycodes.
 - Modes for languages:
   - Belarusian (Latin) (mapped to Belarusian Latin QWERTY) with accented characters rearranged.
-  - Polish (mapped to Polish QWERTY and Polish Programmer Dvorak) with macros for the "sz", "cz", "rz" combinations.
-  - Japanese with keys for switching Japanese input modes.
+  - Polish (the default) (mapped to Polish QWERTY and Polish Programmer Dvorak) with macros for the "sz", "cz", "rz" combinations.
+  - Japanese with keys for switching Japanese input modes (not used recently);
+  - None (right `Alt` kept as is).
 - Swap-hands and a mode for using it with both hands
 - Ergoemacs-like Navigation layer
 - A Symbol layer with symbols placed at Programmer Dvorak-like finger positions
@@ -29,4 +30,8 @@
 Used to indicate active modes:
 - Programmer Dvorak emulation;
 - game mode;
-- Mac mode.
+- Mac mode;
+- Language mode:
+  - Belarusian latin;
+  - None;
+  - no indication for Polish and Japanese.

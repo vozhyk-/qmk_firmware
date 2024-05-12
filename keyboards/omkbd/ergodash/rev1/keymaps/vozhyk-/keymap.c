@@ -237,12 +237,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const rgblight_segment_t PROGMEM my_dvp_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {10, 1, HSV_ORANGE},
-    {13, 1, HSV_ORANGE}
+    {7, 1, HSV_ORANGE},
+    {16, 1, HSV_ORANGE}
 );
 
 const rgblight_segment_t PROGMEM my_game_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {8, 1, HSV_BLUE},
+    {8,  1, HSV_BLUE},
     {15, 1, HSV_BLUE}
 );
 
@@ -250,16 +250,35 @@ const rgblight_segment_t PROGMEM my_mac_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {12, 1, HSV_GREEN}
 );
 
+const rgblight_segment_t PROGMEM my_lang_none_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {11, 1, HSV_WHITE}
+);
+
+const rgblight_segment_t PROGMEM my_lang_by_latin_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    /* Left hand */
+    {11, 1, HSV_WHITE},
+    {10, 1, HSV_RED},
+    {9,  1, HSV_WHITE},
+    /* Right hand */
+    {12, 1, HSV_WHITE},
+    {13, 1, HSV_RED},
+    {14, 1, HSV_WHITE}
+);
+
 enum rgb_layers {
     _RGB_DVP = 0,
     _RGB_GAME,
     _RGB_MAC,
+    _RGB_LANG_NONE,
+    _RGB_LANG_BY_LATIN,
 };
 
 const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_dvp_layer,
     my_game_layer,
-    my_mac_layer
+    my_mac_layer,
+    my_lang_none_layer,
+    my_lang_by_latin_layer
 );
 
 void keyboard_post_init_user(void) {
@@ -373,6 +392,13 @@ enum lang {
     JP
 } lang = PL;
 
+void set_lang(enum lang new_lang) {
+    lang = new_lang;
+
+    rgblight_set_layer_state(_RGB_LANG_NONE, lang == NONE);
+    rgblight_set_layer_state(_RGB_LANG_BY_LATIN, lang == BY_LATIN);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == LSYM) {
         switch (lang) {
@@ -460,16 +486,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
     case L_NONE:
-        lang = NONE;
+        set_lang(NONE);
         return false;
     case L_BY_LA:
-        lang = BY_LATIN;
+        set_lang(BY_LATIN);
         return false;
     case L_PL:
-        lang = PL;
+        set_lang(PL);
         return false;
     case L_JP:
-        lang = JP;
+        set_lang(JP);
         return false;
 
     /* TODO: Make Shift+PL_SZ produce Sz, not SZ. */
