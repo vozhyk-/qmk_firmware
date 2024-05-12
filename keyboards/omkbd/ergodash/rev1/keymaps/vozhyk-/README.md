@@ -24,6 +24,7 @@
   - Left (`Command`, `Control`, `Option`) on the bottom row.
   - Hyper mapped to `Command+Control+Option` to simulate the modifier missing in MacOS.
   - Most `Control-*` mappings replaced with `Command-*`.
+  - Host OS detection that turns on Mac mode and Programmer Dvorak emulation for Mac and iOS hosts (which M1 Macs are detected as).
 
 ## Underglow
 

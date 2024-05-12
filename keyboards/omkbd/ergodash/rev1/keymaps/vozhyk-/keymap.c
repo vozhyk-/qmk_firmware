@@ -293,6 +293,29 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
+bool process_detected_host_os_user(os_variant_t detected_os) {
+    switch (detected_os) {
+    case OS_MACOS:
+    case OS_IOS:
+        layer_on(_MAC);
+        layer_on(_DVP);
+        break;
+    default:
+        layer_off(_MAC);
+        /*
+         * Don't turn off DVP layer -
+         * theoretically, one can have it turned on (on a non-Mac host)
+         * and reboot without the keyboard getting reset.
+         * Try to preserve the layer state in this case.
+         * I don't have a dock that does not depower the keyboard
+         * when switching to a different host,
+         * so switching from Mac to non-Mac should not be a problem for now.
+         */
+    }
+
+    return true;
+}
+
 /*
  * If custom_keycode is pressed, send {un,}shifted_output depending on whether the Shift modifier is active.
  * Returns true if the key event should be processed further.
