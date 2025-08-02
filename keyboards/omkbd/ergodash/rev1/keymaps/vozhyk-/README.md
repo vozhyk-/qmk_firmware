@@ -36,3 +36,4 @@ Used to indicate active modes:
   - Belarusian latin;
   - None;
   - no indication for Polish and Japanese.
+- Swap-hands mode.

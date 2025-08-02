@@ -265,12 +265,18 @@ const rgblight_segment_t PROGMEM my_lang_by_latin_layer[] = RGBLIGHT_LAYER_SEGME
     {14, 1, HSV_WHITE}
 );
 
+const rgblight_segment_t PROGMEM my_swaph_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {4, 2, HSV_CHARTREUSE},
+    {18, 2, HSV_CHARTREUSE}
+);
+
 enum rgb_layers {
     _RGB_DVP = 0,
     _RGB_GAME,
     _RGB_MAC,
     _RGB_LANG_NONE,
     _RGB_LANG_BY_LATIN,
+    _RGB_SWAPH,
 };
 
 const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
@@ -278,7 +284,8 @@ const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_game_layer,
     my_mac_layer,
     my_lang_none_layer,
-    my_lang_by_latin_layer
+    my_lang_by_latin_layer,
+    my_swaph_layer
 );
 
 void keyboard_post_init_user(void) {
@@ -289,6 +296,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(_RGB_DVP, layer_state_cmp(state, _DVP));
     rgblight_set_layer_state(_RGB_GAME, layer_state_cmp(state, _GAME));
     rgblight_set_layer_state(_RGB_MAC, layer_state_cmp(state, _MAC));
+    rgblight_set_layer_state(_RGB_SWAPH, layer_state_cmp(state, _SWAPH));
 
     return state;
 }
