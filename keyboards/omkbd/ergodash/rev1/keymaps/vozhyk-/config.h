@@ -38,3 +38,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD
 
 #define RGBLIGHT_LAYERS
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+#define RGBLIGHT_SLEEP
+#define SPLIT_LAYER_STATE_ENABLE
+
+/* Disable some animations to make the firmware fit on the device. */
+#undef RGBLIGHT_EFFECT_SNAKE
+#undef RGBLIGHT_EFFECT_KNIGHT
+#undef RGBLIGHT_EFFECT_CHRISTMAS
+#undef RGBLIGHT_EFFECT_ALTERNATING
